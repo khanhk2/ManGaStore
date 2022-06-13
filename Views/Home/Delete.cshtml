@@ -1,0 +1,39 @@
+﻿@model ManGaStore.Models.ManGa
+
+@{
+    ViewData["Title"] = "Xoá";
+}
+
+<h1>Xoá</h1>
+
+<h3>Bạn có chắc là muốn xoá sản phẩm này ???</h3>
+<div>
+    <h4>ManGa</h4>
+    <hr />
+    <dl class="row" style="border:solid">
+        <dt class="col-sm-2">
+            Tên sách
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)        </dd>
+       
+        <dt class="col-sm-2">
+            Thể Loại
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+        <dt class="col-sm-2">
+            Giá bán
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ManGaID" />
+        <input type="submit" value="Xoá" class="btn btn-danger" />
+        <a asp-action="Index">Quay lại</a>
+    </form>
+</div>

@@ -1,0 +1,68 @@
+﻿@page "/admin/mangas"
+@page "/admin"
+@inherits OwningComponentBase<IManGaStoreRepository>
+<table class="table table-sm table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>ManGaID</th>
+            <th>Title</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <td />
+        </tr>
+    </thead>
+    <tbody>
+        @if (ManGaData?.Count() > 0)
+        {
+            @foreach (ManGa b in ManGaData)
+            {
+                <tr>
+                    <td>@b.ManGaID</td>
+                    <td>@b.Title</td>
+                    <td>@b.Genre</td>
+                    <td>@b.Price.ToString("c")</td>
+                    <td>
+                        <NavLink class="btn btn-info btn-sm"
+                                 href="@GetDetailsUrl(b.ManGaID)">
+                            Details
+                        </NavLink>
+                        <NavLink class="btn btn-warning btn-sm"
+                                 href="@GetEditUrl(b.ManGaID)">
+                            Edit
+                        </NavLink>
+                        <button class="btn btn-danger btn-sm"
+                                @onclick="@(e => DeleteBook(b))">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No Books</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<NavLink class="btn btn-primary" href="/admin/mangas/create">Create</NavLink>
+@code {
+    public IManGaStoreRepository Repository => Service;
+    public IEnumerable<ManGa> ManGaData { get; set; }
+    protected async override Task OnInitializedAsync()
+    {
+        await UpdateData();
+    }
+    public async Task UpdateData()
+    {
+        ManGaData = await Repository.ManGas.ToListAsync();
+    }
+    public async Task DeleteBook(ManGa b)
+    {
+        Repository.DeleteBook(b);
+        await UpdateData();
+    }
+    public string GetDetailsUrl(long id) => $"/admin/mangas/details/{id}";
+    public string GetEditUrl(long id) => $"/admin/mangas/edit/{id}";
+}

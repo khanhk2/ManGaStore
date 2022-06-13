@@ -1,0 +1,52 @@
+﻿@model ManGaStore.Models.ViewModels.ManGaListViewModel
+<p>
+    <a asp-action="Created" class="btn btn-sm  btn-success   text-uppercase"><i class="fas fa-plus-circle"></i> Add to cart</a>
+</p>
+
+
+
+
+
+<div class="row">
+    @foreach (var manga in Model.ManGas)  
+    {
+                <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div style="color:cornflowerblue" class="card-header text-black bg-warning">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @manga.Title
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <img src="~/Images/@manga.ProfilePicture" asp-append-version="true" width="100%" height="300" />
+                    </div>
+                    <div class="col-md-12">
+                        <div style="color:cornflowerblue" class="card-body alert-success">
+                            <p class="card-text"><b>Tên Sản phẩm </b>@manga.Title</p>                            
+                            <p class="card-text"><b>Hãng sản xuất </b>@manga.Genre</p>
+                            <p class="card-text"><b>Giá </b>@manga.Price</p>
+                          @*  <p>
+                                <a asp-action="Delete" asp-route-id="@manga.ManGaID">Delete</a>
+                            </p>*@
+                            <p>
+                                <partial name="ManGaTemplate" model="manga" />
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div page-model="@Model.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary" page-url-genre="@Model.CurrentGenre"
+     class="btn-group pull-right m-1">
+
+</div>

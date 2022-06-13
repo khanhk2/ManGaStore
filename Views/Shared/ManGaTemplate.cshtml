@@ -1,0 +1,16 @@
+﻿@model ManGa
+<div class="card" style="width: 100%;">
+    <div class="card-body">        
+        <form id="@Model.ManGaID" asp-page="/MyCart" method="post">
+            <input type="hidden" asp-for="ManGaID" />
+            <input type="hidden" name="returnUrl"
+                   value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+            <div class="card-text p-1">                                
+                <button type="submit"
+                        class="btn btn-warning btn-sm fa-code-pull-request">
+                    Add To Cart
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

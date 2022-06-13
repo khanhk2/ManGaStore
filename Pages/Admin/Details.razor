@@ -1,0 +1,24 @@
+﻿@page "/admin/mangas/details/{id:long}"
+<h3 class="bg-info text-white text-center p-1">Details</h3>
+<table class="table table-sm table-bordered table-striped">
+    <tbody>
+        <tr><th>ID</th><td>@ManGa.ManGaID</td></tr>
+        <tr><th>Title</th><td>@ManGa.Title</td></tr>        
+        <tr><th>Genre</th><td>@ManGa.Genre</td></tr>
+        <tr><th>Price</th><td>@ManGa.Price.ToString("C")</td></tr>
+    </tbody>
+</table>
+<NavLink class="btn btn-warning" href="@EditUrl">Edit</NavLink>
+<NavLink class="btn btn-secondary" href="/admin/books">Back</NavLink>
+@code {
+    [Inject]
+    public IManGaStoreRepository Repository { get; set; }
+    [Parameter]
+    public long Id { get; set; }
+    public ManGa ManGa { get; set; }
+    protected override void OnParametersSet()
+    {
+        ManGa = Repository.ManGas.FirstOrDefault(b => b.ManGaID == Id);
+    }
+    public string EditUrl => $"/admin/mangas/edit/{ManGa.ManGaID}";
+}

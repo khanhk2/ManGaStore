@@ -1,0 +1,67 @@
+﻿@page "/admin/mangas/edit/{id:long}"
+@page "/admin/mangas/create"
+@inherits OwningComponentBase<IManGaStoreRepository>
+<style>
+    div.validation-message {
+        color: rgb(220, 53, 69);
+        font-weight: 500
+    }
+</style>
+<h3 class="bg-@ThemeColor text-white text-center p-1">@TitleText a Book</h3>
+<EditForm Model="ManGa" OnValidSubmit="SaveBook">
+    <DataAnnotationsValidator />
+    @if (ManGa.ManGaID != 0)
+    {
+        <div class="form-group">
+            <label>ID</label>
+            <input class="form-control" disabled value="@ManGa.ManGaID" />
+        </div>
+    }
+    <div class="form-group">
+        <label>Title</label>
+        <ValidationMessage For="@(() => ManGa.Title)" />
+        <InputText class="form-control" @bind-Value="ManGa.Title" />
+    </div>   
+    <div class="form-group">
+        <label>Genre</label>
+        <ValidationMessage For="@(() => ManGa.Genre)" />
+        <InputText class="form-control" @bind-Value="ManGa.Genre" />
+    </div>
+    <div class="form-group">
+        <label>Price</label>
+        <ValidationMessage For="@(() => ManGa.Price)" />
+        <InputNumber class="form-control" @bind-Value="ManGa.Price" />
+    </div>
+    <button type="submit" class="btn btn-@ThemeColor">Save</button>
+    <NavLink class="btn btn-secondary"
+             href="/admin/products">Cancel</NavLink>
+</EditForm>
+@code {
+    public IManGaStoreRepository Repository => Service;
+    [Inject]
+    public NavigationManager NavManager { get; set; }
+    [Parameter]
+    public long Id { get; set; } = 0;
+    public ManGa ManGa { get; set; } = new ManGa();
+    protected override void OnParametersSet()
+    {
+        if (Id != 0)
+        {
+            ManGa = Repository.ManGas.FirstOrDefault(b => b.ManGaID == Id);
+        }
+    }
+    public void SaveBook()
+    {
+        if (Id == 0)
+        {
+            Repository.CreateBook(ManGa);
+        }
+        else
+        {
+            Repository.SaveBook(ManGa);
+        }
+        NavManager.NavigateTo("/admin/mangas");
+    }
+    public string ThemeColor => Id == 0 ? "primary" : "warning";
+    public string TitleText => Id == 0 ? "Create" : "Edit";
+}
